@@ -1,0 +1,409 @@
+<title>지리학 OX 퀴즈 — 지리 첫걸음</title>
+<style>
+  :root {
+    --paper: #f3f5f2;
+    --paper-2: #ffffff;
+    --ink: #1c2b30;
+    --ink-soft: #4a5c62;
+    --line: #d9e0dc;
+    --ocean: #2b7a94;
+    --ocean-deep: #1f5b70;
+    --land: #3c8f5c;
+    --land-soft: #e4f1e8;
+    --coral: #cf6046;
+    --coral-soft: #fae6e0;
+    --gold: #c99a3f;
+    --shadow: 0 18px 40px -24px rgba(28,43,48,.45);
+    --radius: 18px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #0f1b21;
+      --paper-2: #16262d;
+      --ink: #eaf1ee;
+      --ink-soft: #9db3ba;
+      --line: #244049;
+      --ocean: #4fb0cc;
+      --ocean-deep: #3d95af;
+      --land: #58bd7e;
+      --land-soft: #16342a;
+      --coral: #e78566;
+      --coral-soft: #3a221c;
+      --gold: #dcb35c;
+      --shadow: 0 20px 50px -26px rgba(0,0,0,.7);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #0f1b21; --paper-2: #16262d; --ink: #eaf1ee; --ink-soft: #9db3ba;
+    --line: #244049; --ocean: #4fb0cc; --ocean-deep: #3d95af; --land: #58bd7e;
+    --land-soft: #16342a; --coral: #e78566; --coral-soft: #3a221c; --gold: #dcb35c;
+    --shadow: 0 20px 50px -26px rgba(0,0,0,.7);
+  }
+  :root[data-theme="light"] {
+    --paper: #f3f5f2; --paper-2: #ffffff; --ink: #1c2b30; --ink-soft: #4a5c62;
+    --line: #d9e0dc; --ocean: #2b7a94; --ocean-deep: #1f5b70; --land: #3c8f5c;
+    --land-soft: #e4f1e8; --coral: #cf6046; --coral-soft: #fae6e0; --gold: #c99a3f;
+    --shadow: 0 18px 40px -24px rgba(28,43,48,.45);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at 12% 8%, rgba(43,122,148,.10), transparent 42%),
+      radial-gradient(circle at 88% 92%, rgba(60,143,92,.10), transparent 42%),
+      var(--paper);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 28px 18px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { width: 100%; max-width: 620px; }
+
+  .card {
+    background: var(--paper-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  /* --- header --- */
+  .head {
+    padding: 26px 30px 22px;
+    border-bottom: 1px solid var(--line);
+    background:
+      linear-gradient(180deg, rgba(43,122,148,.06), transparent);
+  }
+  .eyebrow {
+    font-size: 12px;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--ocean);
+    font-weight: 700;
+    margin: 0 0 8px;
+  }
+  .title {
+    font-family: Georgia, "Nanum Myeongjo", "Times New Roman", serif;
+    font-size: clamp(26px, 6vw, 34px);
+    line-height: 1.15;
+    margin: 0;
+    letter-spacing: -.01em;
+    text-wrap: balance;
+  }
+  .title .globe { color: var(--land); }
+
+  .body { padding: 26px 30px 30px; }
+
+  /* --- start screen --- */
+  .lead { color: var(--ink-soft); font-size: 15.5px; margin: 0 0 22px; }
+  .facts { display: grid; gap: 12px; margin: 0 0 26px; }
+  .fact {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 14.5px; color: var(--ink);
+  }
+  .fact b { color: var(--ocean); }
+  .chip {
+    flex: none; width: 40px; height: 40px; border-radius: 11px;
+    display: grid; place-items: center; font-size: 19px;
+    background: var(--land-soft); border: 1px solid var(--line);
+  }
+
+  .btn {
+    font: inherit; cursor: pointer; border: none;
+    border-radius: 13px; padding: 15px 22px;
+    font-weight: 700; font-size: 16px;
+    transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+  }
+  .btn:active { transform: translateY(1px) scale(.995); }
+  .btn-primary {
+    width: 100%;
+    background: var(--ocean); color: #fff;
+    box-shadow: 0 10px 22px -12px var(--ocean);
+  }
+  .btn-primary:hover { background: var(--ocean-deep); }
+
+  /* --- progress --- */
+  .meta {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin: 0 0 12px; font-size: 13px; color: var(--ink-soft);
+  }
+  .meta .q-count { font-weight: 700; color: var(--ink); font-size: 14px; }
+  .meta .score { font-variant-numeric: tabular-nums; }
+  .track {
+    height: 7px; border-radius: 99px; background: var(--line);
+    overflow: hidden; margin: 0 0 24px;
+  }
+  .bar {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--ocean), var(--land));
+    border-radius: 99px; transition: width .4s cubic-bezier(.4,0,.2,1);
+  }
+
+  .question {
+    font-size: clamp(19px, 4.6vw, 23px);
+    font-weight: 600; line-height: 1.45;
+    margin: 0 0 26px; min-height: 66px;
+    text-wrap: balance;
+  }
+
+  .ox {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    margin: 0 0 8px;
+  }
+  .ox-btn {
+    font: inherit; cursor: pointer;
+    border: 2px solid var(--line); background: var(--paper-2);
+    border-radius: 15px; padding: 22px 10px;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    transition: transform .12s ease, border-color .12s ease, background .12s ease;
+  }
+  .ox-btn:hover:not(:disabled) { transform: translateY(-2px); border-color: var(--ocean); }
+  .ox-btn:disabled { cursor: default; }
+  .ox-mark { font-size: 34px; font-weight: 800; line-height: 1; }
+  .ox-o .ox-mark { color: var(--land); }
+  .ox-x .ox-mark { color: var(--coral); }
+  .ox-label { font-size: 13px; color: var(--ink-soft); font-weight: 600; }
+  .ox-btn.picked-correct { border-color: var(--land); background: var(--land-soft); }
+  .ox-btn.picked-wrong { border-color: var(--coral); background: var(--coral-soft); }
+  .ox-btn.reveal-correct { border-color: var(--land); }
+
+  /* --- feedback --- */
+  .feedback {
+    margin: 20px 0 0; padding: 18px 20px;
+    border-radius: 14px; border: 1px solid var(--line);
+    background: var(--paper); opacity: 0; transform: translateY(8px);
+    transition: opacity .3s ease, transform .3s ease;
+  }
+  .feedback.show { opacity: 1; transform: none; }
+  .verdict { display: flex; align-items: center; gap: 9px; font-weight: 800; font-size: 16px; margin: 0 0 8px; }
+  .verdict.ok { color: var(--land); }
+  .verdict.no { color: var(--coral); }
+  .verdict .ans {
+    margin-left: auto; font-size: 12px; letter-spacing: .04em;
+    color: var(--ink-soft); font-weight: 700; text-transform: uppercase;
+  }
+  .explain { margin: 0; font-size: 14.5px; color: var(--ink-soft); line-height: 1.62; }
+  .explain b { color: var(--ink); }
+
+  .next-row { margin-top: 18px; }
+  .btn-next {
+    width: 100%; background: var(--ink); color: var(--paper-2);
+  }
+  .btn-next:hover { background: var(--ocean-deep); }
+
+  /* --- result --- */
+  .result { text-align: center; padding: 8px 0 4px; }
+  .result .medal { font-size: 58px; margin: 0 0 6px; }
+  .result .score-big {
+    font-family: Georgia, serif; font-size: 52px; font-weight: 700;
+    margin: 4px 0 0; letter-spacing: -.02em;
+  }
+  .result .score-big span { color: var(--ink-soft); font-size: 26px; }
+  .result .grade { font-size: 18px; font-weight: 700; margin: 2px 0 6px; color: var(--ocean); }
+  .result .blurb { color: var(--ink-soft); font-size: 15px; margin: 0 auto 24px; max-width: 40ch; }
+
+  .hidden { display: none; }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+  @media (max-width: 420px) {
+    .head, .body { padding-left: 20px; padding-right: 20px; }
+  }
+</style>
+
+<div class="wrap">
+  <div class="card">
+    <header class="head">
+      <p class="eyebrow">지리 첫걸음 · OX QUIZ</p>
+      <h1 class="title">세계를 <span class="globe">O</span> 아니면 <span style="color:var(--coral)">X</span> 로<br>알아가는 지리 퀴즈</h1>
+    </header>
+
+    <div class="body">
+      <!-- START -->
+      <section id="start">
+        <p class="lead">지리를 잘 몰라도 괜찮아요. 상식만으로 풀 수 있는 <b>20문제</b>를 준비했어요. 한 문제씩 O·X로 답하면, 바로 정답과 쉬운 설명을 보여드립니다.</p>
+        <div class="facts">
+          <div class="fact"><span class="chip">🗺️</span><span><b>20문제</b> · 대륙, 나라, 바다, 산까지 두루두루</span></div>
+          <div class="fact"><span class="chip">💡</span><span>틀려도 걱정 마세요 — <b>이해하기 쉬운 설명</b>이 매번 나와요</span></div>
+          <div class="fact"><span class="chip">⏱️</span><span>가볍게 <b>5분</b>이면 완주할 수 있어요</span></div>
+        </div>
+        <button class="btn btn-primary" onclick="startQuiz()">퀴즈 시작하기 →</button>
+      </section>
+
+      <!-- QUIZ -->
+      <section id="quiz" class="hidden">
+        <div class="meta">
+          <span class="q-count"><span id="cur">1</span> / 20</span>
+          <span class="score">맞힌 개수 <b id="scoreNow">0</b></span>
+        </div>
+        <div class="track"><div class="bar" id="bar"></div></div>
+        <p class="question" id="qText"></p>
+        <div class="ox">
+          <button class="ox-btn ox-o" id="btnO" onclick="answer(true)">
+            <span class="ox-mark">O</span><span class="ox-label">맞다</span>
+          </button>
+          <button class="ox-btn ox-x" id="btnX" onclick="answer(false)">
+            <span class="ox-mark">X</span><span class="ox-label">아니다</span>
+          </button>
+        </div>
+        <div class="feedback" id="feedback">
+          <p class="verdict" id="verdict"></p>
+          <p class="explain" id="explain"></p>
+          <div class="next-row">
+            <button class="btn btn-next" id="nextBtn" onclick="nextQuestion()">다음 문제 →</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- RESULT -->
+      <section id="result" class="hidden">
+        <div class="result">
+          <div class="medal" id="medal">🏆</div>
+          <p class="score-big"><span id="finalScore">0</span><span> / 20</span></p>
+          <p class="grade" id="grade"></p>
+          <p class="blurb" id="blurb"></p>
+          <button class="btn btn-primary" onclick="restart()">다시 도전하기 ↻</button>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script>
+  const QUESTIONS = [
+    { q: "아시아는 지구에서 가장 큰 대륙이다.", a: true,
+      e: "맞아요. <b>아시아</b>는 면적으로도, 인구로도 세계에서 가장 큰 대륙이에요. 한국·중국·인도·일본이 모두 아시아에 속해 있죠." },
+    { q: "사하라 사막은 남아메리카에 있다.", a: false,
+      e: "아니에요. <b>사하라 사막</b>은 <b>아프리카</b> 북부에 있는, 세계에서 가장 큰 더운 사막이에요. 남아메리카에는 아마존 열대우림이 있죠." },
+    { q: "태평양은 세계에서 가장 큰 바다이다.", a: true,
+      e: "맞아요. <b>태평양</b>은 지구 표면의 약 3분의 1을 덮을 만큼 넓은, 가장 큰 바다예요. 한국의 동쪽 너머로 이어지는 바다이기도 해요." },
+    { q: "대한민국은 사방이 바다로 둘러싸인 섬나라이다.", a: false,
+      e: "아니에요. 한국은 대륙과 이어진 <b>반도(半島)</b> 국가예요. 삼면은 바다지만 북쪽은 육지로 이어져 있어서 섬나라는 아니랍니다." },
+    { q: "세계에서 가장 높은 산은 에베레스트산이다.", a: true,
+      e: "맞아요. <b>에베레스트산</b>은 높이 약 8,849m로 세계에서 가장 높은 산이에요. 아시아의 <b>히말라야 산맥</b>에 있어요." },
+    { q: "러시아는 세계에서 국토가 가장 넓은 나라이다.", a: true,
+      e: "맞아요. <b>러시아</b>는 유럽과 아시아에 걸쳐 있는, 면적이 가장 넓은 나라예요. 2위인 캐나다의 거의 두 배랍니다." },
+    { q: "남극 대륙은 강수량이 매우 적어 '사막'으로도 분류된다.", a: true,
+      e: "맞아요. 의외죠? <b>사막</b>은 '모래'가 아니라 '비·눈이 적은 곳'을 뜻해요. 남극은 눈이 거의 내리지 않아 <b>가장 큰 사막</b>으로도 불려요." },
+    { q: "이집트의 나일강은 아프리카 대륙에 있다.", a: true,
+      e: "맞아요. <b>나일강</b>은 아프리카 북동부를 가로질러 흐르는 세계에서 손꼽히게 긴 강이에요. 고대 이집트 문명이 이 강가에서 시작됐죠." },
+    { q: "지구의 대륙은 모두 합쳐 5개이다.", a: false,
+      e: "아니에요. 대륙은 보통 <b>7개</b>로 나눠요 — 아시아·아프리카·유럽·북아메리카·남아메리카·오세아니아·남극. (5개로 세는 방식도 있지만 가장 흔한 기준은 7개예요.)" },
+    { q: "호주(오스트레일리아)는 하나의 나라이면서 동시에 대륙이다.", a: true,
+      e: "맞아요. <b>호주</b>는 한 나라가 대륙 전체를 차지하는 특별한 경우예요. 그래서 '대륙이자 나라'라고 부른답니다." },
+    { q: "아마존 열대우림은 아프리카에 있다.", a: false,
+      e: "아니에요. <b>아마존 열대우림</b>은 <b>남아메리카</b>(주로 브라질)에 있어요. '지구의 허파'라고 불릴 만큼 넓고 울창한 숲이죠." },
+    { q: "그린란드는 세계에서 가장 큰 섬이다.", a: true,
+      e: "맞아요. <b>그린란드</b>는 세계에서 가장 큰 섬이에요. 대부분이 두꺼운 얼음으로 덮여 있고, 덴마크에 속한 자치 지역이랍니다." },
+    { q: "에베레스트산은 유럽의 알프스 산맥에 있다.", a: false,
+      e: "아니에요. 에베레스트는 아시아의 <b>히말라야 산맥</b>에 있어요. <b>알프스</b>는 유럽에 있는 다른 산맥으로, 몽블랑이 대표적이죠." },
+    { q: "지중해는 유럽과 아프리카 대륙 사이에 있는 바다이다.", a: true,
+      e: "맞아요. <b>지중해</b>는 유럽 남쪽과 아프리카 북쪽 사이에 자리한 바다예요. 이탈리아·그리스·이집트 등이 이 바다에 접해 있어요." },
+    { q: "이탈리아는 '장화(부츠) 모양'으로 유명한 나라이다.", a: true,
+      e: "맞아요. <b>이탈리아</b>는 지도에서 긴 장화처럼 생긴 반도 모양으로 유명해요. 발끝으로 시칠리아 섬을 '차는' 듯한 모습이죠." },
+    { q: "바티칸 시국은 세계에서 가장 작은 나라이다.", a: true,
+      e: "맞아요. <b>바티칸 시국</b>은 이탈리아 로마 안에 있는, 면적이 가장 작은 독립 국가예요. 서울의 작은 공원 정도 크기랍니다." },
+    { q: "일본은 여러 개의 섬으로 이루어진 나라이다.", a: true,
+      e: "맞아요. <b>일본</b>은 혼슈·홋카이도·규슈·시코쿠 같은 크고 작은 섬 수천 개로 이루어진 섬나라예요." },
+    { q: "적도는 지구를 북반구와 남반구로 나누는 가상의 선이다.", a: true,
+      e: "맞아요. <b>적도</b>는 지구 한가운데를 두르는 가상의 가로선으로, 위쪽을 북반구, 아래쪽을 남반구로 나눠요. 한국은 북반구에 있어요." },
+    { q: "지구 온난화로 극지방의 빙하가 녹으면 바닷물의 높이(해수면)가 올라간다.", a: true,
+      e: "맞아요. <b>지구 온난화</b>로 남극·북극의 얼음이 녹으면 그 물이 바다로 흘러들어 <b>해수면</b>이 높아져요. 그래서 낮은 섬나라들이 잠길 위험이 커진답니다." },
+    { q: "사막 기후 지역은 낮과 밤의 기온 차이가 거의 없다.", a: false,
+      e: "아니에요. <b>사막</b>은 낮에는 햇볕으로 몹시 덥지만, 밤에는 열이 빠르게 식어 쌀쌀해져요. 이렇게 낮과 밤의 기온 차(<b>일교차</b>)가 매우 큰 것이 사막 기후의 특징이에요." },
+  ];
+
+  let idx = 0, score = 0, answered = false;
+  const $ = id => document.getElementById(id);
+
+  function startQuiz() {
+    $("start").classList.add("hidden");
+    $("quiz").classList.remove("hidden");
+    idx = 0; score = 0;
+    renderQuestion();
+  }
+
+  function renderQuestion() {
+    answered = false;
+    const item = QUESTIONS[idx];
+    $("cur").textContent = idx + 1;
+    $("scoreNow").textContent = score;
+    $("qText").textContent = item.q;
+    $("bar").style.width = (idx / QUESTIONS.length * 100) + "%";
+
+    ["btnO", "btnX"].forEach(id => {
+      const b = $(id);
+      b.disabled = false;
+      b.classList.remove("picked-correct", "picked-wrong", "reveal-correct");
+    });
+    const fb = $("feedback");
+    fb.classList.remove("show");
+    fb.style.display = "none";
+  }
+
+  function answer(userSaysTrue) {
+    if (answered) return;
+    answered = true;
+    const item = QUESTIONS[idx];
+    const correct = (userSaysTrue === item.a);
+    if (correct) score++;
+    $("scoreNow").textContent = score;
+
+    $("btnO").disabled = true;
+    $("btnX").disabled = true;
+    const pickedBtn = userSaysTrue ? $("btnO") : $("btnX");
+    const correctBtn = item.a ? $("btnO") : $("btnX");
+    pickedBtn.classList.add(correct ? "picked-correct" : "picked-wrong");
+    if (!correct) correctBtn.classList.add("reveal-correct");
+
+    const verdict = $("verdict");
+    verdict.className = "verdict " + (correct ? "ok" : "no");
+    verdict.innerHTML = (correct ? "✓ 정답이에요!" : "✗ 아쉬워요")
+      + `<span class="ans">정답: ${item.a ? "O" : "X"}</span>`;
+    $("explain").innerHTML = item.e;
+
+    $("bar").style.width = ((idx + 1) / QUESTIONS.length * 100) + "%";
+    $("nextBtn").textContent = (idx === QUESTIONS.length - 1) ? "결과 보기 →" : "다음 문제 →";
+
+    const fb = $("feedback");
+    fb.style.display = "block";
+    requestAnimationFrame(() => fb.classList.add("show"));
+  }
+
+  function nextQuestion() {
+    if (idx < QUESTIONS.length - 1) {
+      idx++;
+      renderQuestion();
+    } else {
+      showResult();
+    }
+  }
+
+  function showResult() {
+    $("quiz").classList.add("hidden");
+    $("result").classList.remove("hidden");
+    $("finalScore").textContent = score;
+
+    let medal, grade, blurb;
+    if (score >= 18)      { medal = "🏆"; grade = "지리 박사님!"; blurb = "거의 다 맞혔어요. 세계 지도를 훤히 꿰고 계시는군요!"; }
+    else if (score >= 14) { medal = "🥇"; grade = "지리 고수"; blurb = "훌륭해요! 지리 상식이 아주 탄탄하시네요."; }
+    else if (score >= 10) { medal = "🥈"; grade = "지리 탐험가"; blurb = "잘하셨어요! 절반 이상 맞혔어요. 설명을 보며 조금만 더 채워봐요."; }
+    else if (score >= 6)  { medal = "🥉"; grade = "지리 새싹"; blurb = "좋은 출발이에요! 다시 풀면서 설명을 읽으면 금방 늘어요."; }
+    else                  { medal = "🌱"; grade = "지리 첫걸음"; blurb = "괜찮아요, 지금부터 시작이에요! 설명을 천천히 읽고 다시 도전해봐요."; }
+
+    $("medal").textContent = medal;
+    $("grade").textContent = grade;
+    $("blurb").textContent = blurb;
+  }
+
+  function restart() {
+    $("result").classList.add("hidden");
+    $("start").classList.remove("hidden");
+  }
+</script>
